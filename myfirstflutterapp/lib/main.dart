@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(CountingApp());
 }
 
-class MyApp extends StatelessWidget {
+class CountingApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,6 +58,12 @@ class _StartPageState extends State<StartPage> {
     });
   }
 
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -66,6 +72,8 @@ class _StartPageState extends State<StartPage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -99,14 +107,54 @@ class _StartPageState extends State<StartPage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline1,
             ),
+            // Image.asset(
+            //   'assets/images/mario.png',
+            //   height: queryData.size.height / 2,
+            //   width: queryData.size.width / 2,
+            //   fit: BoxFit.contain,
+            // ),
+            Image.network(
+              'https://pngimg.com/uploads/mario/mario_PNG53.png',
+              loadingBuilder: (context, child, loadingProgress) {
+                return loadingProgress == null
+                    ? child
+                    : LinearProgressIndicator();
+              },
+              height: queryData.size.height / 2,
+              width: queryData.size.width / 2,
+              fit: BoxFit.contain,
+            ),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      onPressed: _resetCounter,
+                      backgroundColor: Colors.red,
+                      tooltip: 'reset me',
+                      child: Icon(Icons.remove),
+                    ),
+                    FloatingActionButton(
+                      onPressed: _incrementCounter,
+                      tooltip: 'press me',
+                      child: Icon(Icons.add),
+                    ),
+                    FloatingActionButton(
+                      onPressed: _incrementCounter,
+                      tooltip: 'press me',
+                      child: Icon(Icons.add),
+                    )
+                  ],
+                ))
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'press me',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'press me',
+      //   child: Icon(Icons.add),
+      // ) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
